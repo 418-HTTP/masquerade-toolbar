@@ -25,6 +25,11 @@ class AutocompleteController extends ControllerBase {
   protected Masquerade $masquerade;
 
   /**
+   * The logger.
+   */
+  protected LoggerInterface $logger;
+
+  /**
    * Constructs an AutocompleteController.
    */
   public function __construct(
@@ -41,6 +46,7 @@ class AutocompleteController extends ControllerBase {
   public static function create(ContainerInterface $container): self {
     return new self(
       $container->get('masquerade'),
+      $container->get('logger.channel.masquerade_toolbar')
     );
   }
 

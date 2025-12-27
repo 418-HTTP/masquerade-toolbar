@@ -1,4 +1,8 @@
 services:
+  logger.channel.masquerade_toolbar:
+    parent: logger.channel_base
+    arguments: ['masquerade_toolbar']
+
   masquerade_toolbar.manager:
     class: Drupal\masquerade_toolbar\Service\MasqueradeToolbarManager
     arguments:
