@@ -105,5 +105,4 @@ While inspired by Masquerade Float Block, this module offers:
 
 MAINTAINERS
 -----------
-This module was developed as an enhanced alternative to Masquerade Float Block
-for modern Drupal versions.
+Slobodan Prodanovic
