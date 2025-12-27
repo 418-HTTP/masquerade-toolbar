@@ -1,0 +1,7 @@
+position: 'bottom-right'
+collapsed: false
+show_recent: true
+recent_limit: 5
+show_roles: true
+keyboard_shortcuts: true
+mobile_hide: true

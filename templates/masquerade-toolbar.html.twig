@@ -1,0 +1,124 @@
+{#
+/**
+ * @file
+ * Template for masquerade toolbar.
+ *
+ * Available variables:
+ * - state: Masquerade state array
+ *   - is_masquerading: Boolean
+ *   - current_user: Current user array
+ *   - original_user: Original user array (if masquerading)
+ * - recent_users: Array of recent users
+ * - settings: Toolbar settings
+ */
+#}
+<div class="masquerade-toolbar masquerade-toolbar--{{ settings.position }}{% if state.is_masquerading %} masquerade-toolbar--masquerading{% endif %}"
+     data-position="{{ settings.position }}"
+     data-collapsed="{{ settings.collapsed ? 'true' : 'false' }}"
+     data-masquerading="{{ state.is_masquerading ? 'true' : 'false' }}">
+
+  <div class="masquerade-toolbar__toggle">
+    <button class="masquerade-toolbar__toggle-btn" aria-label="{{ 'Toggle masquerade toolbar'|t }}">
+      <span class="masquerade-toolbar__icon"></span>
+    </button>
+  </div>
+
+  <div class="masquerade-toolbar__content">
+    <div class="masquerade-toolbar__header">
+      <h3 class="masquerade-toolbar__title">{{ 'Masquerade'|t }}</h3>
+      <div class="masquerade-toolbar__header-actions">
+        <a href="/admin/config/people/masquerade-toolbar" class="masquerade-toolbar__settings" aria-label="{{ 'Settings'|t }}" title="{{ 'Masquerade Toolbar Settings'|t }}">⚙️</a>
+        <button class="masquerade-toolbar__close" aria-label="{{ 'Close'|t }}">×</button>
+      </div>
+    </div>
+
+    <div class="masquerade-toolbar__body">
+      {% if state.is_masquerading %}
+        <div class="masquerade-toolbar__status masquerade-toolbar__status--active">
+          <div class="masquerade-toolbar__user-info">
+            <strong>{{ 'Original:'|t }}</strong>
+            <div class="masquerade-toolbar__user-name">{{ state.original_user.name }}</div>
+            {% if settings.show_roles and state.original_user.roles %}
+              <div class="masquerade-toolbar__user-roles">
+                {% for role in state.original_user.roles %}
+                  {% if role != 'authenticated' %}
+                    <span class="masquerade-toolbar__role-badge">{{ role }}</span>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="masquerade-toolbar__arrow">→</div>
+
+          <div class="masquerade-toolbar__user-info">
+            <strong>{{ 'Current:'|t }}</strong>
+            <div class="masquerade-toolbar__user-name">{{ state.current_user.name }}</div>
+            {% if settings.show_roles and state.current_user.roles %}
+              <div class="masquerade-toolbar__user-roles">
+                {% for role in state.current_user.roles %}
+                  {% if role != 'authenticated' %}
+                    <span class="masquerade-toolbar__role-badge">{{ role }}</span>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <a href="{{ state.unmasquerade_url }}" class="masquerade-toolbar__switch-back button button--primary">
+            {{ 'Switch Back'|t }}
+          </a>
+        </div>
+      {% else %}
+        <div class="masquerade-toolbar__status">
+          <div class="masquerade-toolbar__user-info">
+            <strong>{{ 'Logged in as:'|t }}</strong>
+            <div class="masquerade-toolbar__user-name">{{ state.current_user.name }}</div>
+            {% if settings.show_roles and state.current_user.roles %}
+              <div class="masquerade-toolbar__user-roles">
+                {% for role in state.current_user.roles %}
+                  {% if role != 'authenticated' %}
+                    <span class="masquerade-toolbar__role-badge">{{ role }}</span>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="masquerade-toolbar__search">
+        <label for="masquerade-toolbar-search">{{ 'Switch to user:'|t }}</label>
+        <input type="text"
+               id="masquerade-toolbar-search"
+               class="masquerade-toolbar__search-input"
+               placeholder="{{ 'Search by username or email...'|t }}"
+               autocomplete="off">
+        <div class="masquerade-toolbar__autocomplete"></div>
+      </div>
+
+      {% if settings.show_recent and recent_users %}
+        <div class="masquerade-toolbar__recent">
+          <strong>{{ 'Recent users:'|t }}</strong>
+          <ul class="masquerade-toolbar__recent-list">
+            {% for user in recent_users %}
+              <li class="masquerade-toolbar__recent-item">
+                <a href="{{ user.masquerade_url }}" class="masquerade-toolbar__recent-link">
+                  {{ user.getAccountName }}
+                  {% if settings.show_roles %}
+                    {% set user_roles = user.getRoles|filter(role => role != 'authenticated') %}
+                    {% if user_roles %}
+                      <span class="masquerade-toolbar__recent-roles">
+                        ({{ user_roles|join(', ') }})
+                      </span>
+                    {% endif %}
+                  {% endif %}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

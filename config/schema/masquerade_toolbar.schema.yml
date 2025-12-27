@@ -1,0 +1,25 @@
+masquerade_toolbar.settings:
+  type: config_object
+  label: 'Masquerade Toolbar settings'
+  mapping:
+    position:
+      type: string
+      label: 'Toolbar position'
+    collapsed:
+      type: boolean
+      label: 'Collapsed by default'
+    show_recent:
+      type: boolean
+      label: 'Show recent users'
+    recent_limit:
+      type: integer
+      label: 'Recent users limit'
+    show_roles:
+      type: boolean
+      label: 'Show user roles'
+    keyboard_shortcuts:
+      type: boolean
+      label: 'Enable keyboard shortcuts'
+    mobile_hide:
+      type: boolean
+      label: 'Hide on mobile devices'

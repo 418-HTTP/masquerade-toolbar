@@ -1,0 +1,8 @@
+name: 'Masquerade Toolbar'
+type: module
+description: 'Floating toolbar for quick user switching via masquerade module'
+package: Administration
+core_version_requirement: ^10 || ^11
+dependencies:
+  - masquerade:masquerade
+configure: masquerade_toolbar.settings

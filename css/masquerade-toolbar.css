@@ -1,0 +1,347 @@
+/**
+ * @file
+ * Masquerade Toolbar styles.
+ */
+
+.masquerade-toolbar {
+  position: fixed;
+  z-index: 9999;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  box-shadow: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  max-width: 400px;
+  transition: all 0.3s ease;
+}
+
+/* Add styling only when expanded */
+.masquerade-toolbar--expanded {
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Position variants */
+.masquerade-toolbar--bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+.masquerade-toolbar--bottom-right {
+  bottom: 20px;
+  right: 20px;
+}
+
+.masquerade-toolbar--top-left {
+  top: 20px;
+  left: 20px;
+}
+
+.masquerade-toolbar--top-right {
+  top: 20px;
+  right: 20px;
+}
+
+/* Toggle button */
+.masquerade-toolbar__toggle {
+  display: none;
+}
+
+.masquerade-toolbar:not(.masquerade-toolbar--expanded) .masquerade-toolbar__toggle {
+  display: block;
+}
+
+.masquerade-toolbar:not(.masquerade-toolbar--expanded) .masquerade-toolbar__content {
+  display: none;
+}
+
+.masquerade-toolbar__toggle-btn {
+  width: 60px;
+  height: 60px;
+  border: none;
+  background: #0073aa;
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  padding: 0;
+}
+
+.masquerade-toolbar__toggle-btn:hover {
+  background: #005177;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.masquerade-toolbar__toggle-btn::before {
+  content: '👤';
+  font-size: 28px;
+  line-height: 1;
+}
+
+/* Masquerading state indicator on toggle button */
+.masquerade-toolbar--masquerading .masquerade-toolbar__toggle-btn {
+  background: #ffc107;
+  animation: pulse-warning 2s ease-in-out infinite;
+}
+
+.masquerade-toolbar--masquerading .masquerade-toolbar__toggle-btn:hover {
+  background: #ffb300;
+}
+
+@keyframes pulse-warning {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.5);
+  }
+  50% {
+    box-shadow: 0 2px 16px rgba(255, 193, 7, 0.8);
+  }
+}
+
+/* Content */
+.masquerade-toolbar__content {
+  min-width: 350px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.masquerade-toolbar__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f7f7f7;
+}
+
+.masquerade-toolbar__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.masquerade-toolbar__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.masquerade-toolbar__settings {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px;
+  color: #666;
+  transition: all 0.2s;
+  border-radius: 3px;
+}
+
+.masquerade-toolbar__settings:hover {
+  color: #0073aa;
+  background: rgba(0, 115, 170, 0.1);
+  transform: rotate(90deg);
+}
+
+.masquerade-toolbar__close {
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.masquerade-toolbar__close:hover {
+  color: #d00;
+}
+
+.masquerade-toolbar__body {
+  padding: 15px;
+}
+
+/* Status */
+.masquerade-toolbar__status {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+.masquerade-toolbar__status--active {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffe5b4 100%);
+  border: 2px solid #ffc107;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+  position: relative;
+}
+
+.masquerade-toolbar__status--active::before {
+  content: '⚠️ MASQUERADING';
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #856404;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.masquerade-toolbar__user-info {
+  margin-bottom: 10px;
+}
+
+.masquerade-toolbar__user-name {
+  font-weight: 600;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
+.masquerade-toolbar__user-roles {
+  margin-top: 5px;
+}
+
+.masquerade-toolbar__role-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #666;
+  color: #fff;
+  border-radius: 3px;
+  font-size: 11px;
+  margin-right: 4px;
+}
+
+.masquerade-toolbar__arrow {
+  text-align: center;
+  font-size: 18px;
+  margin: 10px 0;
+  color: #0073aa;
+}
+
+.masquerade-toolbar__switch-back {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 20px;
+  background: #dc3545;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  text-align: center;
+  width: 100%;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+}
+
+.masquerade-toolbar__switch-back:hover {
+  background: #c82333;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+}
+
+/* Search */
+.masquerade-toolbar__search {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.masquerade-toolbar__search label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.masquerade-toolbar__search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.masquerade-toolbar__search-input:focus {
+  outline: none;
+  border-color: #0073aa;
+  box-shadow: 0 0 0 1px #0073aa;
+}
+
+/* Autocomplete */
+.masquerade-toolbar__autocomplete {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.masquerade-toolbar__autocomplete-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.masquerade-toolbar__autocomplete-item:hover {
+  background: #f7f7f7;
+}
+
+/* Recent users */
+.masquerade-toolbar__recent strong {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.masquerade-toolbar__recent-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.masquerade-toolbar__recent-item {
+  margin-bottom: 5px;
+}
+
+.masquerade-toolbar__recent-link {
+  display: block;
+  padding: 8px 12px;
+  background: #f7f7f7;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.masquerade-toolbar__recent-link:hover {
+  background: #e0e0e0;
+  color: #000;
+}
+
+.masquerade-toolbar__recent-roles {
+  color: #666;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+/* Mobile hide */
+@media (max-width: 767px) {
+  .masquerade-toolbar--mobile-hidden {
+    display: none !important;
+  }
+}

@@ -1,0 +1,142 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Masquerade Toolbar module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_help().
+ */
+function masquerade_toolbar_help($route_name, RouteMatchInterface $route_match): string {
+  if ($route_name == 'help.page.masquerade_toolbar') {
+    $output = '<h2>' . t('About') . '</h2>';
+    $output .= '<p>' . t('The Masquerade Toolbar module provides a floating toolbar widget for quick user switching via the Masquerade module.') . '</p>';
+    $output .= '<h2>' . t('Features') . '</h2>';
+    $output .= '<ul>';
+    $output .= '<li>' . t('Floating toolbar accessible from any page') . '</li>';
+    $output .= '<li>' . t('Autocomplete user search') . '</li>';
+    $output .= '<li>' . t('Recent users list') . '</li>';
+    $output .= '<li>' . t('One-click switch back') . '</li>';
+    $output .= '<li>' . t('Display current and original user info') . '</li>';
+    $output .= '</ul>';
+    $output .= '<h2>' . t('Configuration') . '</h2>';
+    $output .= '<p>' . t('Configure the toolbar at <a href=":url">Masquerade Toolbar Settings</a>.',
+        [
+          ':url' => '/admin/config/people/masquerade-toolbar',
+        ]) . '</p>';
+    return $output;
+  }
+  return '';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function masquerade_toolbar_theme($existing, $type, $theme, $path): array {
+  return [
+    'masquerade_toolbar' => [
+      'variables' => [
+        'state' => NULL,
+        'recent_users' => [],
+        'settings' => [],
+      ],
+      'template' => 'masquerade-toolbar',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function masquerade_toolbar_page_attachments(array &$attachments): void {
+  $manager = \Drupal::service('masquerade_toolbar.manager');
+
+  // Only attach if user can use toolbar.
+  if (!$manager->canUseToolbar()) {
+    return;
+  }
+
+  // Attach library.
+  $attachments['#attached']['library'][] = 'masquerade_toolbar/toolbar';
+
+  // Pass settings to JS.
+  $config = \Drupal::config('masquerade_toolbar.settings');
+
+  $attachments['#attached']['drupalSettings']['masqueradeToolbar'] = [
+    'position' => $config->get('position') ?? 'bottom-right',
+    'collapsed' => $config->get('collapsed') ?? FALSE,
+    'showRecent' => $config->get('show_recent') ?? TRUE,
+    'showRoles' => $config->get('show_roles') ?? TRUE,
+    'keyboardShortcuts' => $config->get('keyboard_shortcuts') ?? TRUE,
+    'mobileHide' => $config->get('mobile_hide') ?? TRUE,
+  ];
+
+  // Cache context.
+  $attachments['#cache']['contexts'][] = 'user.permissions';
+  $attachments['#cache']['contexts'][] = 'session.is_masquerading';
+  $attachments['#cache']['tags'][] = 'config:masquerade_toolbar.settings';
+}
+
+/**
+ * Implements hook_page_bottom().
+ */
+function masquerade_toolbar_page_bottom(array &$page_bottom): void {
+  $manager = \Drupal::service('masquerade_toolbar.manager');
+
+  // Only render if user can use toolbar.
+  if (!$manager->canUseToolbar()) {
+    return;
+  }
+
+  $config = \Drupal::config('masquerade_toolbar.settings');
+  $state = $manager->getMasqueradeState();
+
+  // Add unmasquerade URL if currently masquerading.
+  if ($state['is_masquerading']) {
+    $unmasquerade_url = Url::fromRoute('masquerade.unmasquerade');
+    $token = \Drupal::csrfToken()->get($unmasquerade_url->getInternalPath());
+    $unmasquerade_url->setOption('query', ['token' => $token]);
+    $state['unmasquerade_url'] = $unmasquerade_url->toString();
+  }
+
+  $recent_users = [];
+
+  if ($config->get('show_recent')) {
+    $recent_users = $manager->getRecentUsers();
+
+    // Add masquerade URL with a token for each recent user.
+    foreach ($recent_users as $user) {
+      $url = Url::fromRoute('entity.user.masquerade', [
+        'user' => $user->id(),
+      ]);
+      $token = \Drupal::csrfToken()->get($url->getInternalPath());
+      $url->setOption('query', ['token' => $token]);
+      $user->masquerade_url = $url->toString();
+    }
+  }
+
+  // Render toolbar markup.
+  $page_bottom['masquerade_toolbar'] = [
+    '#theme' => 'masquerade_toolbar',
+    '#state' => $state,
+    '#recent_users' => $recent_users,
+    '#settings' => [
+      'position' => $config->get('position') ?? 'bottom-right',
+      'collapsed' => $config->get('collapsed') ?? FALSE,
+      'show_recent' => $config->get('show_recent') ?? TRUE,
+      'show_roles' => $config->get('show_roles') ?? TRUE,
+    ],
+    '#weight' => 1000,
+    '#cache' => [
+      'contexts' => ['user', 'session.is_masquerading'],
+      'tags' => ['config:masquerade_toolbar.settings'],
+      'max-age' => 0,
+    ],
+  ];
+}

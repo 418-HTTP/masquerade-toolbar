@@ -1,0 +1,27 @@
+services:
+  masquerade_toolbar.manager:
+    class: Drupal\masquerade_toolbar\Service\MasqueradeToolbarManager
+    arguments:
+      - '@current_user'
+      - '@tempstore.private'
+      - '@entity_type.manager'
+      - '@masquerade'
+      - '@config.factory'
+      - '@logger.channel.masquerade_toolbar'
+
+  masquerade_toolbar.event_subscriber:
+    class: Drupal\masquerade_toolbar\EventSubscriber\MasqueradeEventSubscriber
+    arguments:
+      - '@masquerade_toolbar.manager'
+      - '@masquerade'
+    tags:
+      - { name: event_subscriber }
+
+  masquerade_toolbar.access_check:
+    class: Drupal\masquerade_toolbar\Access\ToolbarAccessCheck
+    arguments:
+      - '@masquerade'
+      - '@entity_type.manager'
+      - '@logger.channel.masquerade_toolbar'
+    tags:
+      - { name: access_check, applies_to: _masquerade_toolbar_access }

@@ -1,0 +1,9 @@
+use masquerade toolbar:
+  title: 'Use Masquerade Toolbar'
+  description: 'Access the floating masquerade toolbar widget.'
+  restrict access: false
+
+administer masquerade toolbar:
+  title: 'Administer Masquerade Toolbar'
+  description: 'Configure masquerade toolbar settings.'
+  restrict access: true

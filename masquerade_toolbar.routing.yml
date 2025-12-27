@@ -1,0 +1,14 @@
+masquerade_toolbar.settings:
+  path: '/admin/config/people/masquerade-toolbar'
+  defaults:
+    _form: '\Drupal\masquerade_toolbar\Form\SettingsForm'
+    _title: 'Masquerade Toolbar Settings'
+  requirements:
+    _permission: 'administer masquerade toolbar'
+
+masquerade_toolbar.autocomplete:
+  path: '/masquerade-toolbar/autocomplete'
+  defaults:
+    _controller: '\Drupal\masquerade_toolbar\Controller\AutocompleteController::autocomplete'
+  requirements:
+    _masquerade_toolbar_access: 'TRUE'
