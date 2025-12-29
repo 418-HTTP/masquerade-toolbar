@@ -87,15 +87,21 @@
         </div>
       {% endif %}
 
-      <div class="masquerade-toolbar__search">
-        <label for="masquerade-toolbar-search">{{ 'Switch to user:'|t }}</label>
-        <input type="text"
-               id="masquerade-toolbar-search"
-               class="masquerade-toolbar__search-input"
-               placeholder="{{ 'Search by username or email...'|t }}"
-               autocomplete="off">
-        <div class="masquerade-toolbar__autocomplete"></div>
-      </div>
+      {% if state.is_masquerading %}
+        <div class="masquerade-toolbar__status masquerade-toolbar__status--inactive">
+          {{ 'In order to masquerade as different user, you need to switch back first.'|t }}
+        </div>
+      {% else %}
+        <div class="masquerade-toolbar__search">
+          <label for="masquerade-toolbar-search">{{ 'Switch to user:'|t }}</label>
+          <input type="text"
+                 id="masquerade-toolbar-search"
+                 class="masquerade-toolbar__search-input"
+                 placeholder="{{ 'Search by username or email...'|t }}"
+                 autocomplete="off">
+          <div class="masquerade-toolbar__autocomplete"></div>
+        </div>
+      {% endif %}
 
       {% if settings.show_recent and recent_users %}
         <div class="masquerade-toolbar__recent">
