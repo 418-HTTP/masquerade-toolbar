@@ -20,7 +20,7 @@
 .masquerade-toolbar--expanded {
   border: 1px solid #ccc;
   background: #fff;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 20%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Position variants */
@@ -67,7 +67,7 @@
   border: none;
   border-radius: 50%;
   background: #0073aa;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   color: #fff;
   cursor: pointer;
   transition: all 0.2s;
@@ -75,7 +75,7 @@
 
 .masquerade-toolbar__toggle-btn:hover {
   background: #005177;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 40%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   transform: scale(1.05);
 }
 
@@ -98,11 +98,11 @@
 @keyframes pulse-warning {
   0%,
   100% {
-    box-shadow: 0 2px 8px rgb(255 193 7 / 50%);
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.5);
   }
 
   50% {
-    box-shadow: 0 2px 16px rgb(255 193 7 / 80%);
+    box-shadow: 0 2px 16px rgba(255, 193, 7, 0.8);
   }
 }
 
@@ -148,7 +148,7 @@
 }
 
 .masquerade-toolbar__settings:hover {
-  background: rgb(0 115 170 / 10%);
+  background: rgba(0, 115, 170, 0.1);
   color: #0073aa;
   transform: rotate(90deg);
 }
@@ -186,7 +186,7 @@
   border: 2px solid #ffc107;
   border-radius: 4px;
   background: linear-gradient(135deg, #fff3cd 0%, #ffe5b4 100%);
-  box-shadow: 0 2px 8px rgb(255 193 7 / 30%);
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
 }
 
 .masquerade-toolbar__status--active::before {
@@ -237,7 +237,7 @@
   padding: 12px 20px;
   border-radius: 4px;
   background: #dc3545;
-  box-shadow: 0 2px 4px rgb(220 53 69 / 30%);
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
@@ -248,7 +248,7 @@
 
 .masquerade-toolbar__switch-back:hover {
   background: #c82333;
-  box-shadow: 0 4px 8px rgb(220 53 69 / 40%);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
   color: #fff;
   transform: translateY(-1px);
 }
@@ -282,10 +282,10 @@
 /* Autocomplete */
 .masquerade-toolbar__autocomplete {
   position: absolute;
+  z-index: 10;
   top: 100%;
   right: 0;
   left: 0;
-  z-index: 10;
   display: none;
   max-height: 200px;
   overflow-y: auto;

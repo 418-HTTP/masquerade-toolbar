@@ -1,8 +1,2 @@
 includes:
   - phpstan-baseline.neon
-
-parameters:
-  paths:
-    - .
-  excludePaths:
-    - tests/

@@ -21,9 +21,7 @@
         const config = drupalSettings.masqueradeToolbar || {};
         const $toggleBtn = $toolbar.find('.masquerade-toolbar__toggle-btn');
         const $closeBtn = $toolbar.find('.masquerade-toolbar__close');
-        const $searchInput = $toolbar.find(
-          '.masquerade-toolbar__search-input',
-        );
+        const $searchInput = $toolbar.find('.masquerade-toolbar__search-input');
         const $autocomplete = $toolbar.find(
           '.masquerade-toolbar__autocomplete',
         );
