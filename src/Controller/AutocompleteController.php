@@ -34,7 +34,7 @@ class AutocompleteController extends ControllerBase {
    */
   public function __construct(
     Masquerade $masquerade,
-    LoggerInterface $logger
+    LoggerInterface $logger,
   ) {
     $this->masquerade = $masquerade;
     $this->logger = $logger;
@@ -65,7 +65,7 @@ class AutocompleteController extends ControllerBase {
     try {
       $storage = $this->entityTypeManager()->getStorage('user');
     }
-    catch (InvalidPluginDefinitionException|PluginNotFoundException $e) {
+    catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
       $this->logger->error($e->getMessage());
       return new JsonResponse($matches);
     }

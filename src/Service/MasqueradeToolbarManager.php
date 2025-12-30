@@ -60,7 +60,7 @@ class MasqueradeToolbarManager {
     EntityTypeManagerInterface $entity_type_manager,
     Masquerade $masquerade,
     ConfigFactoryInterface $config_factory,
-    LoggerInterface $logger
+    LoggerInterface $logger,
   ) {
     $this->currentUser = $current_user;
     $this->tempStore = $temp_store;
@@ -109,7 +109,7 @@ class MasqueradeToolbarManager {
     try {
       $storage = $this->entityTypeManager->getStorage('user');
     }
-    catch (InvalidPluginDefinitionException|PluginNotFoundException $e) {
+    catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
       $this->logger->error($e->getMessage());
       return [];
     }
@@ -144,7 +144,7 @@ class MasqueradeToolbarManager {
         try {
           $storage = $this->entityTypeManager->getStorage('user');
         }
-        catch (InvalidPluginDefinitionException|PluginNotFoundException $e) {
+        catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
           $this->logger->error($e->getMessage());
           return FALSE;
         }
@@ -209,7 +209,7 @@ class MasqueradeToolbarManager {
     try {
       $storage = $this->entityTypeManager->getStorage('user');
     }
-    catch (InvalidPluginDefinitionException|PluginNotFoundException $e) {
+    catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
       $this->logger->error($e->getMessage());
       return NULL;
     }

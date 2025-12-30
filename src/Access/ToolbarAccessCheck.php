@@ -45,7 +45,7 @@ class ToolbarAccessCheck implements AccessInterface {
   public function __construct(
     Masquerade $masquerade,
     EntityTypeManagerInterface $entity_type_manager,
-    LoggerInterface $logger
+    LoggerInterface $logger,
   ) {
     $this->masquerade = $masquerade;
     $this->entityTypeManager = $entity_type_manager;
@@ -66,7 +66,7 @@ class ToolbarAccessCheck implements AccessInterface {
         try {
           $storage = $this->entityTypeManager->getStorage('user');
         }
-        catch (InvalidPluginDefinitionException|PluginNotFoundException $e) {
+        catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
           $this->logger->error($e->getMessage());
           return AccessResult::forbidden();
         }
