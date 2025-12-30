@@ -1,0 +1,15 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "prodanovic",
+    "slobodan",
+    "unmasquerade"
+  ],
+  "ignorePaths": [
+    "vendor/**",
+    "node_modules/**",
+    "*.min.js",
+    "*.min.css"
+  ]
+}
