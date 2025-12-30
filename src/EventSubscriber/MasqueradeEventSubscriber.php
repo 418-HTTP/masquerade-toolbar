@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\masquerade_toolbar\EventSubscriber;
 
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\masquerade\Masquerade;
 use Drupal\masquerade_toolbar\Service\MasqueradeToolbarManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,14 +27,21 @@ class MasqueradeEventSubscriber implements EventSubscriberInterface {
   protected Masquerade $masquerade;
 
   /**
+   * The current user.
+   */
+  protected AccountProxyInterface $currentUser;
+
+  /**
    * Constructs a MasqueradeEventSubscriber.
    */
   public function __construct(
     MasqueradeToolbarManager $toolbar_manager,
     Masquerade $masquerade,
+    AccountProxyInterface $current_user,
   ) {
     $this->toolbarManager = $toolbar_manager;
     $this->masquerade = $masquerade;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -61,7 +69,7 @@ class MasqueradeEventSubscriber implements EventSubscriberInterface {
     $session = $event->getRequest()->getSession();
     if ($this->masquerade->isMasquerading()) {
       $last_tracked = $session->get('masquerade_toolbar_last_tracked');
-      $current_uid = \Drupal::currentUser()->id();
+      $current_uid = $this->currentUser->id();
 
       // Only track if this is a new masquerade (different from last tracked).
       if ($last_tracked !== $current_uid) {

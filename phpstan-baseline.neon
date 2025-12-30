@@ -1,0 +1,41 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property Drupal\\\\masquerade_toolbar\\\\Access\\\\ToolbarAccessCheck\\:\\:\\$masquerade has unknown class Drupal\\\\masquerade\\\\Masquerade as its type\\.$#"
+			count: 1
+			path: src/Access/ToolbarAccessCheck.php
+
+		-
+			message: "#^Parameter \\$masquerade of method Drupal\\\\masquerade_toolbar\\\\Access\\\\ToolbarAccessCheck\\:\\:__construct\\(\\) has invalid type Drupal\\\\masquerade\\\\Masquerade\\.$#"
+			count: 1
+			path: src/Access/ToolbarAccessCheck.php
+
+		-
+			message: "#^Property Drupal\\\\masquerade_toolbar\\\\Controller\\\\AutocompleteController\\:\\:\\$masquerade has unknown class Drupal\\\\masquerade\\\\Masquerade as its type\\.$#"
+			count: 1
+			path: src/Controller/AutocompleteController.php
+
+		-
+			message: "#^Parameter \\$masquerade of method Drupal\\\\masquerade_toolbar\\\\Controller\\\\AutocompleteController\\:\\:__construct\\(\\) has invalid type Drupal\\\\masquerade\\\\Masquerade\\.$#"
+			count: 1
+			path: src/Controller/AutocompleteController.php
+
+		-
+			message: "#^Property Drupal\\\\masquerade_toolbar\\\\EventSubscriber\\\\MasqueradeEventSubscriber\\:\\:\\$masquerade has unknown class Drupal\\\\masquerade\\\\Masquerade as its type\\.$#"
+			count: 1
+			path: src/EventSubscriber/MasqueradeEventSubscriber.php
+
+		-
+			message: "#^Parameter \\$masquerade of method Drupal\\\\masquerade_toolbar\\\\EventSubscriber\\\\MasqueradeEventSubscriber\\:\\:__construct\\(\\) has invalid type Drupal\\\\masquerade\\\\Masquerade\\.$#"
+			count: 1
+			path: src/EventSubscriber/MasqueradeEventSubscriber.php
+
+		-
+			message: "#^Property Drupal\\\\masquerade_toolbar\\\\Service\\\\MasqueradeToolbarManager\\:\\:\\$masquerade has unknown class Drupal\\\\masquerade\\\\Masquerade as its type\\.$#"
+			count: 1
+			path: src/Service/MasqueradeToolbarManager.php
+
+		-
+			message: "#^Parameter \\$masquerade of method Drupal\\\\masquerade_toolbar\\\\Service\\\\MasqueradeToolbarManager\\:\\:__construct\\(\\) has invalid type Drupal\\\\masquerade\\\\Masquerade\\.$#"
+			count: 1
+			path: src/Service/MasqueradeToolbarManager.php

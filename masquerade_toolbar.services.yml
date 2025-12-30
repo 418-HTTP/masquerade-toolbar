@@ -12,12 +12,14 @@ services:
       - '@masquerade'
       - '@config.factory'
       - '@logger.channel.masquerade_toolbar'
+      - '@request_stack'
 
   masquerade_toolbar.event_subscriber:
     class: Drupal\masquerade_toolbar\EventSubscriber\MasqueradeEventSubscriber
     arguments:
       - '@masquerade_toolbar.manager'
       - '@masquerade'
+      - '@current_user'
     tags:
       - { name: event_subscriber }
 
@@ -27,5 +29,6 @@ services:
       - '@masquerade'
       - '@entity_type.manager'
       - '@logger.channel.masquerade_toolbar'
+      - '@request_stack'
     tags:
       - { name: access_check, applies_to: _masquerade_toolbar_access }

@@ -6,6 +6,7 @@ namespace Drupal\masquerade_toolbar\Controller;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Core\Access\CsrfTokenGenerator;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\masquerade\Masquerade;
@@ -13,6 +14,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Returns autocomplete responses for user search.
@@ -30,14 +32,28 @@ class AutocompleteController extends ControllerBase {
   protected LoggerInterface $logger;
 
   /**
+   * The request stack.
+   */
+  protected RequestStack $requestStack;
+
+  /**
+   * The CSRF token generator.
+   */
+  protected CsrfTokenGenerator $csrfToken;
+
+  /**
    * Constructs an AutocompleteController.
    */
   public function __construct(
     Masquerade $masquerade,
     LoggerInterface $logger,
+    RequestStack $request_stack,
+    CsrfTokenGenerator $csrf_token,
   ) {
     $this->masquerade = $masquerade;
     $this->logger = $logger;
+    $this->requestStack = $request_stack;
+    $this->csrfToken = $csrf_token;
   }
 
   /**
@@ -46,7 +62,9 @@ class AutocompleteController extends ControllerBase {
   public static function create(ContainerInterface $container): self {
     return new self(
       $container->get('masquerade'),
-      $container->get('logger.channel.masquerade_toolbar')
+      $container->get('logger.channel.masquerade_toolbar'),
+      $container->get('request_stack'),
+      $container->get('csrf_token')
     );
   }
 
@@ -93,7 +111,7 @@ class AutocompleteController extends ControllerBase {
     // Get original user ID if masquerading.
     $original_uid = NULL;
     if ($this->masquerade->isMasquerading()) {
-      $original_uid = \Drupal::request()->getSession()->getMetadataBag()->getMasquerade();
+      $original_uid = $this->requestStack->getCurrentRequest()->getSession()->getMetadataBag()->getMasquerade();
     }
 
     foreach ($users as $user) {
@@ -119,7 +137,7 @@ class AutocompleteController extends ControllerBase {
       $url = Url::fromRoute('entity.user.masquerade', [
         'user' => $user->id(),
       ]);
-      $token = \Drupal::csrfToken()->get($url->getInternalPath());
+      $token = $this->csrfToken->get($url->getInternalPath());
       $url->setOption('query', ['token' => $token]);
       $masquerade_url = $url->toString();
 

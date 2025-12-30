@@ -15,6 +15,7 @@ use Drupal\Core\TempStore\TempStoreException;
 use Drupal\masquerade\Masquerade;
 use Drupal\user\UserInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Manages masquerade toolbar functionality.
@@ -52,6 +53,11 @@ class MasqueradeToolbarManager {
   protected LoggerInterface $logger;
 
   /**
+   * The request stack.
+   */
+  protected RequestStack $requestStack;
+
+  /**
    * Constructs a MasqueradeToolbarManager.
    */
   public function __construct(
@@ -61,6 +67,7 @@ class MasqueradeToolbarManager {
     Masquerade $masquerade,
     ConfigFactoryInterface $config_factory,
     LoggerInterface $logger,
+    RequestStack $request_stack,
   ) {
     $this->currentUser = $current_user;
     $this->tempStore = $temp_store;
@@ -68,6 +75,7 @@ class MasqueradeToolbarManager {
     $this->masquerade = $masquerade;
     $this->configFactory = $config_factory;
     $this->logger = $logger;
+    $this->requestStack = $request_stack;
   }
 
   /**
@@ -139,7 +147,7 @@ class MasqueradeToolbarManager {
 
     if ($this->masquerade->isMasquerading()) {
       // Get original user ID from masquerade session metadata.
-      $original_uid = \Drupal::request()->getSession()->getMetadataBag()->getMasquerade();
+      $original_uid = $this->requestStack->getCurrentRequest()->getSession()->getMetadataBag()->getMasquerade();
       if ($original_uid) {
         try {
           $storage = $this->entityTypeManager->getStorage('user');
@@ -190,7 +198,7 @@ class MasqueradeToolbarManager {
 
     if ($is_masquerading) {
       // Get original user ID from masquerade session metadata.
-      $original_uid = \Drupal::request()->getSession()->getMetadataBag()->getMasquerade();
+      $original_uid = $this->requestStack->getCurrentRequest()->getSession()->getMetadataBag()->getMasquerade();
       if ($original_uid) {
         $original_user = $this->loadUser((int) $original_uid);
         if ($original_user) {

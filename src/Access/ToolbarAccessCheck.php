@@ -15,6 +15,7 @@ use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\masquerade\Masquerade;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -40,16 +41,23 @@ class ToolbarAccessCheck implements AccessInterface {
   protected LoggerInterface $logger;
 
   /**
+   * The request stack.
+   */
+  protected RequestStack $requestStack;
+
+  /**
    * Constructs a ToolbarAccessCheck.
    */
   public function __construct(
     Masquerade $masquerade,
     EntityTypeManagerInterface $entity_type_manager,
     LoggerInterface $logger,
+    RequestStack $request_stack,
   ) {
     $this->masquerade = $masquerade;
     $this->entityTypeManager = $entity_type_manager;
     $this->logger = $logger;
+    $this->requestStack = $request_stack;
   }
 
   /**
@@ -61,7 +69,7 @@ class ToolbarAccessCheck implements AccessInterface {
 
     // If masquerading, check the original user's permissions.
     if ($this->masquerade->isMasquerading()) {
-      $original_uid = \Drupal::request()->getSession()->getMetadataBag()->getMasquerade();
+      $original_uid = $this->requestStack->getCurrentRequest()->getSession()->getMetadataBag()->getMasquerade();
       if ($original_uid) {
         try {
           $storage = $this->entityTypeManager->getStorage('user');
